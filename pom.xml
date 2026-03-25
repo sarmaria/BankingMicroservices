@@ -13,7 +13,6 @@
     <version>0.0.1-SNAPSHOT</version>
     <name>accounts</name>
     <description>accounts</description>
-    <packaging>jar</packaging>
     <url/>
     <licenses>
         <license/>
@@ -109,15 +108,13 @@
                 </configuration>
             </plugin>
             <plugin>
-                <groupId>org.springframework.boot</groupId>
-                <artifactId>spring-boot-maven-plugin</artifactId>
+                <groupId>com.google.cloud.tools</groupId>
+                <artifactId>jib-maven-plugin</artifactId>
+                <version>3.5.1</version>
                 <configuration>
-                    <excludes>
-                        <exclude>
-                            <groupId>org.projectlombok</groupId>
-                            <artifactId>lombok</artifactId>
-                        </exclude>
-                    </excludes>
+                    <to>
+                        <image>sarmaria/${project.artifactId}:v1</image>
+                    </to>
                 </configuration>
             </plugin>
         </plugins>
