@@ -1,5 +1,6 @@
 package com.banking.accounts.controller;
 
+import com.banking.accounts.dto.AccountsContactInfoDto;
 import com.banking.accounts.dto.CustomerDto;
 import com.banking.accounts.dto.ErrorResponseDto;
 import com.banking.accounts.dto.ResponseDto;
@@ -12,13 +13,20 @@ import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.validation.Valid;
 import jakarta.validation.constraints.Pattern;
+import org.springframework.beans.factory.annotation.Value;
+import org.springframework.core.env.Environment;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.annotation.Validated;
-import org.springframework.web.bind.annotation.*;
-import lombok.*;
+import org.springframework.web.bind.annotation.DeleteMapping;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.RestController;
 
-@AllArgsConstructor
 @RestController
 @RequestMapping("/api")
 @Validated
@@ -26,6 +34,17 @@ import lombok.*;
 public class AccountsController {
 
     private final IAccountsService accountsService;
+    private final Environment environment;
+    private final AccountsContactInfoDto accountsContactInfoDto;
+
+    @Value("${build.info}")
+    private String buildInfo;
+
+    public AccountsController(IAccountsService accountsService, Environment environment, AccountsContactInfoDto accountsContactInfoDto) {
+        this.accountsService = accountsService;
+        this.environment = environment;
+        this.accountsContactInfoDto = accountsContactInfoDto;
+    }
 
     @Operation(summary = "Create Account Rest API")
     @ApiResponse(responseCode = "201")
@@ -74,5 +93,26 @@ public class AccountsController {
         }
         return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
                 .body(new ResponseDto("Error Occurred.", HttpStatus.INTERNAL_SERVER_ERROR));
+    }
+
+    @Operation(summary = "Fetch Build Info Rest API")
+    @ApiResponse(responseCode = "200")
+    @GetMapping("/build-info")
+    public ResponseEntity<String> buildInfo(){
+        return ResponseEntity.status(HttpStatus.OK).body(buildInfo);
+    }
+
+    @Operation(summary = "Fetch Java Home Info  Rest API")
+    @ApiResponse(responseCode = "200")
+    @GetMapping("/java-info")
+    public ResponseEntity<String> javaInfo(){
+        return ResponseEntity.status(HttpStatus.OK).body(environment.getProperty("JAVA_HOME"));
+    }
+
+    @Operation(summary = "Fetch Contact Info Rest API")
+    @ApiResponse(responseCode = "200")
+    @GetMapping("/contact-info")
+    public ResponseEntity<AccountsContactInfoDto> contactInfo(){
+        return ResponseEntity.status(HttpStatus.OK).body(accountsContactInfoDto);
     }
 }

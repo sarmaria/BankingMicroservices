@@ -14,3 +14,18 @@ spring:
     hibernate:
       ddl-auto: update
     show-sql: true
+  config:
+    import:
+      - "application-qa.yml"
+      - "application-prod.yml"
+build:
+  info: "v1"
+accounts:
+  message: "Welcome to accounts APIs"
+  contactDetails:
+    name: "John Doe"
+    email: "johndoe@email.com"
+    role: "Developer"
+  onCallSupport:
+    - (111) 12345-1242
+    - (222) 12345-1243
