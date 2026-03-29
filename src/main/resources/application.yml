@@ -35,8 +35,25 @@ management:
   endpoints:
     web:
       exposure:
-        include:
-        - "refresh"
-        - "busrefresh"
+        include: "*"
+  endpoint:
+    shutdown:
+      access: unrestricted
+  info:
+    env:
+      enabled: true
+eureka:
+  instance:
+    prefer-ip-address: true
+  client:
+    register-with-eureka: true
+    fetch-registry: true
+    service-url:
+      defaultZone: http://localhost:8070/eureka/
 
-
+#Helps in display of the Eureka Dashboard
+info:
+  app:
+    name: "accounts"
+    description: "Banking accounts application"
+    version: "1.0.0"
