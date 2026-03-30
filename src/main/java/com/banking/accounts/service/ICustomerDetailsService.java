@@ -8,5 +8,5 @@ public interface ICustomerDetailsService {
      * @param mobileNumber
      * @return Details of the customer
      */
-    CustomerDetailsDto fetchCustomerDetails(String mobileNumber);
+    CustomerDetailsDto fetchCustomerDetails(String mobileNumber, String traceId);
 }

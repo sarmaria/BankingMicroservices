@@ -1,6 +1,9 @@
 package com.banking.accounts.service.impl;
 
-import com.banking.accounts.dto.*;
+import com.banking.accounts.dto.AccountDto;
+import com.banking.accounts.dto.CardDto;
+import com.banking.accounts.dto.CustomerDetailsDto;
+import com.banking.accounts.dto.LoanDto;
 import com.banking.accounts.entity.Account;
 import com.banking.accounts.entity.Customer;
 import com.banking.accounts.exception.ResourceNotFoundException;
@@ -34,7 +37,7 @@ public class CustomerDetailsServiceImpl implements ICustomerDetailsService {
      * @return Details of the customer
      */
     @Override
-    public CustomerDetailsDto fetchCustomerDetails(String mobileNumber) {
+    public CustomerDetailsDto fetchCustomerDetails(String mobileNumber, String traceId) {
         Customer customer = customerRepository.findByMobileNumber(mobileNumber)
                 .orElseThrow(() -> new ResourceNotFoundException("Customer", "MobileNumber", mobileNumber)
                 );
@@ -42,8 +45,8 @@ public class CustomerDetailsServiceImpl implements ICustomerDetailsService {
                 .orElseThrow(() -> new ResourceNotFoundException("Account", "CustomerId", String.valueOf(customer.getCustomerId()))
                 );
         AccountDto accountDto = AccountMapper.mapToDto(account);
-        CardDto cardDto = cardsFeignClient.fetch(mobileNumber).getBody();
-        LoanDto loanDto = loansFeignClient.fetch(mobileNumber).getBody();
+        CardDto cardDto = cardsFeignClient.fetch(traceId, mobileNumber).getBody();
+        LoanDto loanDto = loansFeignClient.fetch(traceId, mobileNumber).getBody();
         return CustomerDetailsMapper.toDto(customer, accountDto, cardDto, loanDto);
     }
 }
