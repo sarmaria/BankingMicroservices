@@ -14,7 +14,10 @@ import com.banking.accounts.repository.CustomerRepository;
 import com.banking.accounts.service.ICustomerDetailsService;
 import com.banking.accounts.service.client.CardsFeignClient;
 import com.banking.accounts.service.client.LoansFeignClient;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
+
+import java.util.Optional;
 
 @Service
 public class CustomerDetailsServiceImpl implements ICustomerDetailsService {
@@ -31,7 +34,6 @@ public class CustomerDetailsServiceImpl implements ICustomerDetailsService {
         this.loansFeignClient = loansFeignClient;
     }
 
-
     /**
      * @param mobileNumber
      * @return Details of the customer
@@ -45,8 +47,8 @@ public class CustomerDetailsServiceImpl implements ICustomerDetailsService {
                 .orElseThrow(() -> new ResourceNotFoundException("Account", "CustomerId", String.valueOf(customer.getCustomerId()))
                 );
         AccountDto accountDto = AccountMapper.mapToDto(account);
-        CardDto cardDto = cardsFeignClient.fetch(traceId, mobileNumber).getBody();
-        LoanDto loanDto = loansFeignClient.fetch(traceId, mobileNumber).getBody();
+        CardDto cardDto = Optional.ofNullable(cardsFeignClient.fetch(traceId, mobileNumber)).map(ResponseEntity::getBody).orElse(null);
+        LoanDto loanDto = Optional.ofNullable(loansFeignClient.fetch(traceId, mobileNumber)).map(ResponseEntity::getBody).orElse(null);
         return CustomerDetailsMapper.toDto(customer, accountDto, cardDto, loanDto);
     }
 }

@@ -8,7 +8,7 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestHeader;
 import org.springframework.web.bind.annotation.RequestParam;
 
-@FeignClient(LoansFeignClient.LOANS_MICROSERVICE_NAME)
+@FeignClient(value = LoansFeignClient.LOANS_MICROSERVICE_NAME, fallback = LoansFallback.class)
 public interface LoansFeignClient {
     String LOANS_MICROSERVICE_NAME = "loans";
 

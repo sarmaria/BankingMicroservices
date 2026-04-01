@@ -30,6 +30,20 @@ spring:
     hibernate:
       ddl-auto: update
     show-sql: true
+  cloud:
+    openfeign:
+      circuitbreaker:
+        enabled: true
+
+resilience4j:
+  circuitbreaker:
+    configs:
+      default:
+        sliding-window-size: 5
+        failure-rate-threshold: 50
+        wait-duration-in-open-state:
+          seconds: 10000
+        permitted-number-of-calls-in-half-open-state: 2
 
 management:
   endpoints:

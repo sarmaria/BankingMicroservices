@@ -8,7 +8,7 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestHeader;
 import org.springframework.web.bind.annotation.RequestParam;
 
-@FeignClient(CardsFeignClient.CARDS_MICROSERVICE_NAME)
+@FeignClient(name = CardsFeignClient.CARDS_MICROSERVICE_NAME, fallback = CardsFallback.class)
 public interface CardsFeignClient {
     String CARDS_MICROSERVICE_NAME = "cards";
 

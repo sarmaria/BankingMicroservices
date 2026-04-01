@@ -107,6 +107,13 @@
              <artifactId>spring-cloud-starter-bus-amqp</artifactId>
          </dependency> -->
 
+        <!-- To add cirucit breaker and fallback mechanisms on the feign clients -->
+
+        <dependency>
+            <groupId>org.springframework.cloud</groupId>
+            <artifactId>spring-cloud-starter-circuitbreaker-resilience4j</artifactId>
+        </dependency>
+
         <!-- For registering with eureka server for service discovery -->
 
         <dependency>
